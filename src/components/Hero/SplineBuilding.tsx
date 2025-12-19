@@ -1,5 +1,4 @@
 import { Suspense, useState, useCallback, lazy, useEffect, useRef, memo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import DataCard, { DataCardData } from './DataCard';
 
 // Lazy load the Spline component
