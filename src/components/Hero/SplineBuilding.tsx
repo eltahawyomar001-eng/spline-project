@@ -1,6 +1,6 @@
-import { Suspense, useState, useCallback, useEffect, useRef, memo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment, Float, MeshTransmissionMaterial, Text } from '@react-three/drei';
+import { Suspense, useState, useCallback, useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Environment, Float } from '@react-three/drei';
 import * as THREE from 'three';
 import DataCard, { DataCardData } from './DataCard';
 
