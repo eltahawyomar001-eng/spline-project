@@ -1,0 +1,1 @@
+Nächster Schritt: Bitte starte direkt mit dem Upgrade des 3D-Modells (weg vom "Klotz", hin zum "High-Tech Asset").
