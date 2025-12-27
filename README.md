@@ -1,18 +1,17 @@
-# Infrastructure Intelligence - Hero Section POC
+# Falke Facility Management - Corporate Website
 
-A premium B2B hero section proof-of-concept featuring a 3D interactive building visualization using Spline, built with React, TypeScript, and TailwindCSS.
+A premium corporate website for Falke Facility Management, featuring a 3D interactive building visualization using Spline, built with React, TypeScript, and TailwindCSS.
 
-## ✨ Features
+## Features
 
 - **Dark Mode Luxury Design** - Bloomberg Terminal aesthetic with grid patterns, glass morphism, and soft bloom highlights
 - **Interactive 3D Model** - Spline integration with hotspots for roof, windows, and parking areas
-- **Animated Data Cards** - Framer Motion powered cards that appear on hover/click
-- **Magnetic Buttons** - Subtle hover effect that follows cursor
-- **Smooth Scrolling** - Lenis integration for butter-smooth page scrolling
-- **Fully Responsive** - Optimized for mobile, tablet, and desktop
+- **Smooth Animations** - Framer Motion powered transitions and micro-interactions
+- **Responsive Design** - Optimized for mobile, tablet, and desktop
 - **Accessible** - Focus styles, reduced motion support, semantic HTML
+- **German Language** - Full German content for the German market
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Node.js 18+ 
@@ -21,9 +20,6 @@ A premium B2B hero section proof-of-concept featuring a 3D interactive building 
 ### Installation
 
 ```bash
-# Navigate to project directory
-cd "spline project"
-
 # Install dependencies
 npm install
 
@@ -40,79 +36,39 @@ npm run build
 npm run preview
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
 ├── components/
-│   └── Hero/
-│       ├── Hero.tsx           # Main hero section component
-│       ├── SplineBuilding.tsx # 3D Spline integration + hotspots
-│       ├── DataCard.tsx       # Animated data cards
-│       ├── MagneticButton.tsx # Magnetic hover effect buttons
-│       └── index.ts           # Exports
+│   ├── Hero/
+│   │   ├── Hero.tsx           # Main hero section component
+│   │   ├── SplineBuilding.tsx # 3D Spline integration
+│   │   ├── DataCard.tsx       # Animated data cards
+│   │   └── MagneticButton.tsx # Professional button component
+│   ├── Navbar.tsx             # Responsive navigation with mobile menu
+│   ├── LogoWall.tsx           # Trust indicator logo wall
+│   ├── LegalModal.tsx         # Modal for legal content (Impressum, etc.)
+│   └── SiteLoader.tsx         # Premium loading screen
 ├── hooks/
 │   ├── useLenis.ts            # Smooth scrolling hook
 │   └── useMagnetic.ts         # Magnetic effect hook
 ├── styles/
 │   └── globals.css            # Global styles, utilities, animations
-├── App.tsx                    # Main app with demo sections
+├── App.tsx                    # Main app with all sections
 └── main.tsx                   # Entry point
 ```
 
-## 🎨 How to Create the Spline Scene
+## Sections
 
-To make the 3D model fully interactive, you need to create a scene in Spline:
+- **Hero** - Premium landing with 3D building visualization
+- **Logo Wall** - Trust indicators with partner/client logos
+- **Leistungen** - Services section with card-based layout
+- **Ueber Uns** - About section with company statistics
+- **Kontakt** - Contact section with CTA
+- **Legal Modals** - Impressum, Datenschutz, AGB in accessible modals
 
-### Step 1: Create Your Scene
-1. Go to [spline.design](https://spline.design) and create a new project
-2. Build a building-like shape (box/glass/wireframe aesthetic)
-3. Add distinct parts that users can interact with
-
-### Step 2: Name Your Objects (CRITICAL!)
-In Spline, select each interactive object and name them EXACTLY:
-- `roof` - The roof/top section of the building
-- `windows` - The facade/glazing/window section
-- `parking` - The parking/ground level section
-
-### Step 3: Add Interactions in Spline (Optional)
-- Enable orbit/drag controls for rotation
-- You can add glow effects on hover in Spline itself
-
-### Step 4: Export and Get URL
-1. Click **Export** in Spline
-2. Select **Share**
-3. Copy the public URL (looks like: `https://prod.spline.design/xxxxx/scene.splinecode`)
-
-### Step 5: Update the Code
-Open `src/components/Hero/SplineBuilding.tsx` and replace:
-
-```typescript
-const SPLINE_URL = 'YOUR_SPLINE_SCENE_URL_HERE';
-```
-
-With your actual Spline URL:
-
-```typescript
-const SPLINE_URL = 'https://prod.spline.design/your-scene-id/scene.splinecode';
-```
-
-## 🎯 Hotspot Configuration
-
-The hotspot positions can be adjusted in `SplineBuilding.tsx`:
-
-```typescript
-const HOTSPOT_POSITIONS = {
-  roof: { x: '50%', y: '15%', cardX: 280, cardY: 20 },
-  windows: { x: '65%', y: '45%', cardX: 320, cardY: 150 },
-  parking: { x: '35%', y: '80%', cardX: 50, cardY: 280 },
-};
-```
-
-Adjust `x` and `y` percentages to match where your Spline objects appear visually.
-Adjust `cardX` and `cardY` to position the data cards relative to the container.
-
-## 🎭 Customization
+## Customization
 
 ### Colors
 Edit `tailwind.config.js` to modify the color palette:
@@ -126,33 +82,16 @@ colors: {
 ```
 
 ### Content
-Edit the hero content in `Hero.tsx`:
-- Eyebrow text
-- Headline
-- Subtext
-- CTA buttons
-- Trust badges
+Edit the content in `App.tsx`:
+- Services data
+- Company statistics
+- Contact information
+- Legal content
 
-### Data Cards
-Edit the metrics displayed for each hotspot in `SplineBuilding.tsx`:
+## Technical Notes
 
-```typescript
-const HOTSPOT_DATA = {
-  roof: {
-    title: 'Roof Systems',
-    metrics: [
-      { label: 'Load', value: '78%', status: 'neutral' },
-      // Add more metrics
-    ],
-  },
-  // ...
-};
-```
-
-## 🔧 Technical Notes
-
-### Spline Fallback
-If the Spline URL is invalid or fails to load, a styled fallback placeholder is displayed. The hotspot overlay still works, so users can interact with the data cards even without the 3D model.
+### Spline Integration
+The 3D building is rendered using Spline. The scene URL can be updated in `SplineBuilding.tsx`.
 
 ### Reduced Motion
 The site respects `prefers-reduced-motion` - all animations are disabled for users who prefer reduced motion.
@@ -160,18 +99,17 @@ The site respects `prefers-reduced-motion` - all animations are disabled for use
 ### Performance
 - Spline component is lazy-loaded
 - Animations use GPU-accelerated transforms
-- No heavy images included
+- Optimized image assets
 
-## 📦 Dependencies
+## Dependencies
 
 | Package | Purpose |
 |---------|---------|
 | react | UI framework |
 | framer-motion | Animations |
 | @splinetool/react-spline | 3D Spline integration |
-| @studio-freight/lenis | Smooth scrolling |
 | tailwindcss | Styling |
 
-## 📜 License
+## License
 
 MIT

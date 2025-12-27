@@ -3,6 +3,7 @@ import { Hero } from './components/Hero';
 import { Navbar } from './components/Navbar';
 import { LogoWall } from './components/LogoWall';
 import { SiteLoader } from './components/SiteLoader';
+import { LegalModal, ImpressumContent, DatenschutzContent, AGBContent } from './components/LegalModal';
 
 
 
@@ -69,10 +70,20 @@ const STATS = [
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [activeModal, setActiveModal] = useState<'impressum' | 'datenschutz' | 'agb' | null>(null);
 
   const handleLoadComplete = useCallback(() => {
     setIsLoading(false);
   }, []);
+
+  const openModal = useCallback((modal: 'impressum' | 'datenschutz' | 'agb') => {
+    setActiveModal(modal);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setActiveModal(null);
+  }, []);
+
 
   return (
     <>
@@ -253,12 +264,13 @@ function App() {
           </div>
         </section>
 
-        {/* Footer with Impressum */}
-        <footer className="py-16 px-4 border-t border-gray-800/50 bg-dark-950">
+        {/* Footer - Improved for mobile */}
+        <footer className="py-12 sm:py-16 px-4 border-t border-gray-800/50 bg-dark-950">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            {/* Mobile: Stacked layout, Desktop: Grid */}
+            <div className="flex flex-col space-y-10 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-12 sm:space-y-0 mb-12">
               {/* Logo & Description */}
-              <div className="md:col-span-2">
+              <div className="sm:col-span-2">
                 <img
                   src="/Falke_Blau-frei.png"
                   alt="Falke FM"
@@ -270,41 +282,73 @@ function App() {
                 </p>
               </div>
 
-              {/* Links */}
+              {/* Links - touch-friendly */}
               <div>
                 <h4 className="text-white font-semibold mb-4">Leistungen</h4>
-                <ul className="space-y-2 text-sm">
-                  <li><a href="#leistungen" className="text-gray-500 hover:text-white transition-colors">Reinigungsmanagement</a></li>
-                  <li><a href="#leistungen" className="text-gray-500 hover:text-white transition-colors">Arealpflege</a></li>
-                  <li><a href="#leistungen" className="text-gray-500 hover:text-white transition-colors">Winterdienst</a></li>
-                  <li><a href="#leistungen" className="text-gray-500 hover:text-white transition-colors">Objektmanagement</a></li>
+                <ul className="space-y-1">
+                  <li><a href="#leistungen" className="block py-2 text-sm text-gray-500 hover:text-white transition-colors min-h-[44px] flex items-center">Reinigungsmanagement</a></li>
+                  <li><a href="#leistungen" className="block py-2 text-sm text-gray-500 hover:text-white transition-colors min-h-[44px] flex items-center">Arealpflege</a></li>
+                  <li><a href="#leistungen" className="block py-2 text-sm text-gray-500 hover:text-white transition-colors min-h-[44px] flex items-center">Winterdienst</a></li>
+                  <li><a href="#leistungen" className="block py-2 text-sm text-gray-500 hover:text-white transition-colors min-h-[44px] flex items-center">Objektmanagement</a></li>
                 </ul>
               </div>
 
-              {/* Legal */}
+              {/* Legal - using buttons for modals */}
               <div>
                 <h4 className="text-white font-semibold mb-4">Rechtliches</h4>
-                <ul className="space-y-2 text-sm">
-                  <li><a href="#impressum" className="text-gray-500 hover:text-white transition-colors">Impressum</a></li>
-                  <li><a href="#datenschutz" className="text-gray-500 hover:text-white transition-colors">Datenschutz</a></li>
-                  <li><a href="#agb" className="text-gray-500 hover:text-white transition-colors">AGB</a></li>
+                <ul className="space-y-1">
+                  <li>
+                    <button
+                      onClick={() => openModal('impressum')}
+                      className="block py-2 text-sm text-gray-500 hover:text-white transition-colors min-h-[44px] flex items-center w-full text-left"
+                    >
+                      Impressum
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => openModal('datenschutz')}
+                      className="block py-2 text-sm text-gray-500 hover:text-white transition-colors min-h-[44px] flex items-center w-full text-left"
+                    >
+                      Datenschutz
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => openModal('agb')}
+                      className="block py-2 text-sm text-gray-500 hover:text-white transition-colors min-h-[44px] flex items-center w-full text-left"
+                    >
+                      AGB
+                    </button>
+                  </li>
                 </ul>
               </div>
             </div>
 
             {/* Bottom bar */}
             <div className="pt-8 border-t border-gray-800/50 flex flex-col sm:flex-row justify-between items-center gap-4">
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 text-sm text-center sm:text-left">
                 © {new Date().getFullYear()} Falke Facility Management GmbH. Alle Rechte vorbehalten.
               </p>
               <div className="flex items-center gap-6 text-sm">
-                <a href="#impressum" className="text-gray-500 hover:text-white transition-colors">Impressum</a>
-                <a href="#datenschutz" className="text-gray-500 hover:text-white transition-colors">Datenschutz</a>
+                <button onClick={() => openModal('impressum')} className="text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">Impressum</button>
+                <button onClick={() => openModal('datenschutz')} className="text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] flex items-center">Datenschutz</button>
               </div>
             </div>
           </div>
         </footer>
       </div>
+
+      {/* Legal Modals */}
+      <LegalModal isOpen={activeModal === 'impressum'} onClose={closeModal} title="Impressum">
+        <ImpressumContent />
+      </LegalModal>
+      <LegalModal isOpen={activeModal === 'datenschutz'} onClose={closeModal} title="Datenschutzerklärung">
+        <DatenschutzContent />
+      </LegalModal>
+      <LegalModal isOpen={activeModal === 'agb'} onClose={closeModal} title="Allgemeine Geschäftsbedingungen">
+        <AGBContent />
+      </LegalModal>
     </>
   );
 }

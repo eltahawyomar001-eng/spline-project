@@ -43,3 +43,8 @@ coverage/
 *.pem
 .vercel
 .turbo
+
+# Project-specific exclusions
+prompt of the client.md/
+build  deployment errors.md
+

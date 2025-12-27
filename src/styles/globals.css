@@ -438,3 +438,104 @@ body {
   background: rgba(59, 130, 246, 0.3);
   color: #ffffff;
 }
+
+/* ========================================
+   MODAL ANIMATIONS
+======================================== */
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-in {
+  animation: modalIn 0.2s ease-out forwards;
+}
+
+/* ========================================
+   BUTTON ACTIVE STATES (Touch Feedback)
+======================================== */
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary:active {
+  transform: translateY(0) scale(0.98);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ========================================
+   SCROLL REVEAL ANIMATIONS
+======================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+/* Stagger children animation */
+.stagger-children>*:nth-child(1) {
+  animation-delay: 0ms;
+}
+
+.stagger-children>*:nth-child(2) {
+  animation-delay: 100ms;
+}
+
+.stagger-children>*:nth-child(3) {
+  animation-delay: 200ms;
+}
+
+.stagger-children>*:nth-child(4) {
+  animation-delay: 300ms;
+}
+
+/* ========================================
+   DARK COLOR UTILITIES
+======================================== */
+.bg-dark-900 {
+  background-color: #0a0a0a;
+}
+
+/* ========================================
+   MOBILE TOUCH TARGET MINIMUM
+======================================== */
+@media (max-width: 768px) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
