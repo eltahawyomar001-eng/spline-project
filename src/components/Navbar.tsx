@@ -20,7 +20,7 @@ export const Navbar = memo(function Navbar() {
     return (
         <nav
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || mobileMenuOpen
-                ? 'bg-dark-950/95 backdrop-blur-xl border-b border-white/5'
+                ? 'bg-dark-950/98 sm:bg-dark-950/95 sm:backdrop-blur-xl border-b border-white/5'
                 : 'bg-transparent'
                 }`}
         >
