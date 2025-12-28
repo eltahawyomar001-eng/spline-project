@@ -97,7 +97,7 @@ export const Navbar = memo(function Navbar() {
                     className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                         }`}
                 >
-                    <div className="py-4 space-y-1 border-t border-white/10 bg-dark-950/60 backdrop-blur-xl -mx-4 px-4 sm:-mx-6 sm:px-6">
+                    <div className="py-4 space-y-1 border-t border-white/10 bg-dark-950 -mx-4 px-4 sm:-mx-6 sm:px-6">
                         <a
                             href="#leistungen"
                             onClick={handleLinkClick}
