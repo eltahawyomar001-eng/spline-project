@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import SplineBuilding from './SplineBuilding';
+import useIsMobile from '../../hooks/useIsMobile';
 
 
 // Trust badges data - German
@@ -70,6 +71,8 @@ const BadgeIcon = memo(({ type, className }: { type: string; className: string }
 });
 
 export const Hero = memo(function Hero() {
+  // Don't render Spline on mobile for performance
+  const isMobile = useIsMobile(640);
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-dark-950">
       {/* Background */}
@@ -149,19 +152,23 @@ export const Hero = memo(function Hero() {
           {/* Right Column - 3D Building (desktop) / Static Image (mobile) */}
           <div className="relative h-[350px] sm:h-[400px] lg:h-[600px]">
             {/* Mobile: Static image for performance */}
-            <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden sm:hidden">
-              <img
-                src="/building-mobile.png"
-                alt="3D Building Visualization"
-                className="w-full h-full object-cover"
-                loading="eager"
-              />
-            </div>
+            {isMobile && (
+              <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden">
+                <img
+                  src="/building-mobile.png"
+                  alt="3D Building Visualization"
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                />
+              </div>
+            )}
 
-            {/* Desktop/Tablet: Full 3D Spline */}
-            <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden hidden sm:block">
-              <SplineBuilding />
-            </div>
+            {/* Desktop/Tablet: Full 3D Spline - NOT loaded on mobile at all */}
+            {!isMobile && (
+              <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden">
+                <SplineBuilding />
+              </div>
+            )}
 
             {/* Decorative */}
             <div className="absolute -inset-px rounded-2xl border border-white/5 pointer-events-none" />

@@ -69,12 +69,18 @@ export const Navbar = memo(function Navbar() {
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 hover:opacity-100 transition-opacity" />
                     </a>
 
-                    {/* Mobile Menu Button */}
+                    {/* Mobile Menu Button - iOS compatible */}
                     <button
+                        type="button"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="md:hidden p-2 text-gray-400 hover:text-white transition-colors"
+                        onTouchEnd={(e) => {
+                            e.preventDefault();
+                            setMobileMenuOpen(!mobileMenuOpen);
+                        }}
+                        className="md:hidden p-3 text-gray-400 hover:text-white transition-colors cursor-pointer touch-manipulation"
                         aria-label={mobileMenuOpen ? "Menü schließen" : "Menü öffnen"}
                         aria-expanded={mobileMenuOpen}
+                        style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             {mobileMenuOpen ? (
