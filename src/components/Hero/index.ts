@@ -1,4 +1,5 @@
 export { Hero } from './Hero';
-export { SplineBuilding } from './SplineBuilding';
+// SplineBuilding is lazy-loaded in Hero.tsx for code-splitting
 export { DataCard } from './DataCard';
 export { MagneticButton } from './MagneticButton';
+

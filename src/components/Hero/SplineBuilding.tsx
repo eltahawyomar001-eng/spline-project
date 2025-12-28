@@ -1,6 +1,8 @@
-import { useState, useCallback } from 'react';
-import Building3D from './Building3D';
+import { useState, useCallback, lazy, Suspense } from 'react';
 import DataCard, { DataCardData } from './DataCard';
+
+// Lazy load Building3D to code-split the entire Three.js library (~1MB)
+const Building3D = lazy(() => import('./Building3D'));
 
 // Data card content for each hotspot
 const HOTSPOT_DATA: Record<string, DataCardData> = {
@@ -121,13 +123,15 @@ export function SplineBuilding() {
   return (
     <div className="spline-container relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
 
-      {/* 3D Building Scene */}
+      {/* 3D Building Scene - Lazy loaded with Three.js */}
       <div className={`absolute inset-0 z-10 transition-opacity duration-500 ${isModelLoaded ? 'opacity-100' : 'opacity-0'}`}>
-        <Building3D
-          activeView={activeView}
-          onViewChange={handleViewChange}
-          onReady={handleReady}
-        />
+        <Suspense fallback={null}>
+          <Building3D
+            activeView={activeView}
+            onViewChange={handleViewChange}
+            onReady={handleReady}
+          />
+        </Suspense>
       </div>
 
       {/* Loading overlay */}
