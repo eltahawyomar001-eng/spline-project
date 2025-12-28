@@ -146,8 +146,8 @@ export const Hero = memo(function Hero() {
             </div>
           </div>
 
-          {/* Right Column - 3D (hidden on mobile for cleaner look) */}
-          <div className="relative h-[300px] sm:h-[400px] lg:h-[600px] hidden sm:block">
+          {/* Right Column - 3D Building */}
+          <div className="relative h-[350px] sm:h-[400px] lg:h-[600px]">
             <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden">
               <SplineBuilding />
             </div>
