@@ -146,9 +146,20 @@ export const Hero = memo(function Hero() {
             </div>
           </div>
 
-          {/* Right Column - 3D Building */}
+          {/* Right Column - 3D Building (desktop) / Static Image (mobile) */}
           <div className="relative h-[350px] sm:h-[400px] lg:h-[600px]">
-            <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden">
+            {/* Mobile: Static image for performance */}
+            <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden sm:hidden">
+              <img
+                src="/building-mobile.png"
+                alt="3D Building Visualization"
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
+            </div>
+
+            {/* Desktop/Tablet: Full 3D Spline */}
+            <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden hidden sm:block">
               <SplineBuilding />
             </div>
 
