@@ -1,6 +1,8 @@
-import { memo } from 'react';
-import SplineBuilding from './SplineBuilding';
+import { memo, lazy, Suspense } from 'react';
 import useIsMobile from '../../hooks/useIsMobile';
+
+// Dynamic import - Spline bundle will NOT be downloaded on mobile
+const SplineBuilding = lazy(() => import('./SplineBuilding'));
 
 
 // Trust badges data - German
@@ -165,9 +167,15 @@ export const Hero = memo(function Hero() {
 
             {/* Desktop/Tablet: Full 3D Spline - NOT loaded on mobile at all */}
             {!isMobile && (
-              <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden">
-                <SplineBuilding />
-              </div>
+              <Suspense fallback={
+                <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden flex items-center justify-center bg-dark-950">
+                  <div className="text-gray-500 text-sm">Loading 3D...</div>
+                </div>
+              }>
+                <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden">
+                  <SplineBuilding />
+                </div>
+              </Suspense>
             )}
 
             {/* Decorative */}
