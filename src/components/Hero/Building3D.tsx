@@ -50,10 +50,10 @@ const TEXTURES = {
 // CAMERA VIEWS
 // ==============================================
 const CAMERA_VIEWS = {
-    default: { position: new THREE.Vector3(55, 35, 55), target: new THREE.Vector3(15, 5, 0) },
+    default: { position: new THREE.Vector3(40, 30, 40), target: new THREE.Vector3(5, 5, 0) },
     roof: { position: new THREE.Vector3(18, 38, 22), target: new THREE.Vector3(0, 20, 0) },
     windows: { position: new THREE.Vector3(28, 16, 18), target: new THREE.Vector3(0, 12, 0) },
-    parking: { position: new THREE.Vector3(70, 20, 30), target: new THREE.Vector3(50, 0, 0) },
+    parking: { position: new THREE.Vector3(40, 18, 20), target: new THREE.Vector3(22, 0, 0) },
     winterdienst: { position: new THREE.Vector3(20, 18, 40), target: new THREE.Vector3(0, 0, 20) },
     areal: { position: new THREE.Vector3(-35, 22, 30), target: new THREE.Vector3(-20, 0, 8) },
 };
@@ -266,9 +266,9 @@ function ParkingLot({ highlighted }: { highlighted: boolean }) {
 
     return (
         <group>
-            {/* Parking surface - MOVED FAR FROM BUILDING */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[50, 0.05, 0]} receiveShadow>
-                <planeGeometry args={[40, 35]} />
+            {/* Parking surface - BESIDE the building (not overlapping) */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[22, 0.05, 0]} receiveShadow>
+                <planeGeometry args={[28, 30]} />
                 <meshStandardMaterial
                     {...asphaltTextures}
                     color={highlighted ? '#252525' : '#1a1a1a'}
@@ -282,8 +282,8 @@ function ParkingLot({ highlighted }: { highlighted: boolean }) {
             </mesh>
 
             {/* Road lines decal */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[50, 0.06, 0]}>
-                <planeGeometry args={[40, 35]} />
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[22, 0.06, 0]}>
+                <planeGeometry args={[28, 30]} />
                 <meshStandardMaterial
                     {...roadLinesTextures}
                     transparent
@@ -298,12 +298,12 @@ function ParkingLot({ highlighted }: { highlighted: boolean }) {
             </mesh>
 
             {/* Curbs */}
-            <mesh position={[50, 0.18, -17]} castShadow>
-                <boxGeometry args={[40, 0.35, 0.5]} />
+            <mesh position={[22, 0.18, -15]} castShadow>
+                <boxGeometry args={[28, 0.35, 0.5]} />
                 <meshStandardMaterial color="#505050" roughness={0.75} />
             </mesh>
-            <mesh position={[50, 0.18, 17]} castShadow>
-                <boxGeometry args={[40, 0.35, 0.5]} />
+            <mesh position={[22, 0.18, 15]} castShadow>
+                <boxGeometry args={[28, 0.35, 0.5]} />
                 <meshStandardMaterial color="#505050" roughness={0.75} />
             </mesh>
         </group>
@@ -538,15 +538,14 @@ function Scene({ activeView, onHotspotClick, onReady }: {
             {/* REAL GLB MODELS */}
             <OfficeBuilding highlighted={activeView} />
 
-            {/* Porsche 911 cars in parking lot - positioned on the parking surface at x=50 */}
-            {/* Row 1 - facing south */}
-            <PorscheCar position={[38, 0, -8]} rotation={Math.PI} />
-            <PorscheCar position={[46, 0, -8]} rotation={Math.PI} />
-            <PorscheCar position={[54, 0, -8]} rotation={Math.PI} />
-            <PorscheCar position={[62, 0, -8]} rotation={Math.PI} />
-            {/* Row 2 - facing north */}
-            <PorscheCar position={[38, 0, 8]} rotation={0} />
-            <PorscheCar position={[54, 0, 8]} rotation={0} />
+            {/* Porsche 911 cars in parking lot - beside the building at x=22 */}
+            {/* Row 1 - facing building */}
+            <PorscheCar position={[14, 0.1, -6]} rotation={Math.PI / 2} />
+            <PorscheCar position={[14, 0.1, 0]} rotation={Math.PI / 2} />
+            <PorscheCar position={[14, 0.1, 6]} rotation={Math.PI / 2} />
+            {/* Row 2 - facing away */}
+            <PorscheCar position={[30, 0.1, -6]} rotation={-Math.PI / 2} />
+            <PorscheCar position={[30, 0.1, 6]} rotation={-Math.PI / 2} />
 
             {/* Campus elements */}
             <ParkingLot highlighted={activeView === 'parking'} />
@@ -556,7 +555,7 @@ function Scene({ activeView, onHotspotClick, onReady }: {
             {/* Hotspots */}
             <Marker position={[0, 26, 0]} label="ROOF" active={activeView === 'roof'} onClick={() => onHotspotClick('roof')} />
             <Marker position={[10, 14, 8]} label="FACADE" active={activeView === 'windows'} onClick={() => onHotspotClick('windows')} />
-            <Marker position={[50, 4, 0]} label="PARKING" active={activeView === 'parking'} onClick={() => onHotspotClick('parking')} />
+            <Marker position={[22, 4, 0]} label="PARKING" active={activeView === 'parking'} onClick={() => onHotspotClick('parking')} />
             <Marker position={[0, 3, 20]} label="WINTERDIENST" active={activeView === 'winterdienst'} onClick={() => onHotspotClick('winterdienst')} />
             <Marker position={[-18, 6, 10]} label="AREALPFLEGE" active={activeView === 'areal'} onClick={() => onHotspotClick('areal')} />
 
