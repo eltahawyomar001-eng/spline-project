@@ -5,14 +5,14 @@ interface SiteLoaderProps {
     onLoadComplete: () => void;
 }
 
-// Loading steps for the premium boot sequence
+// Loading steps - minimal terminal style
 const LOADING_STEPS = [
-    { id: 'init', label: 'System initialisieren...', duration: 500 },
-    { id: 'auth', label: 'Authentifizierung...', duration: 400 },
-    { id: 'assets', label: 'Assets laden...', duration: 600 },
-    { id: 'model', label: '3D-Modell vorbereiten...', duration: 700 },
-    { id: 'data', label: 'Gebäudedaten synchronisieren...', duration: 500 },
-    { id: 'ready', label: 'Bereit', duration: 300 },
+    { id: 'init', label: 'SYSTEM INITIALISIEREN', duration: 400 },
+    { id: 'auth', label: 'AUTHENTIFIZIERUNG', duration: 350 },
+    { id: 'assets', label: 'ASSETS LADEN', duration: 500 },
+    { id: 'model', label: '3D-MODELL LADEN', duration: 600 },
+    { id: 'data', label: 'DATEN SYNCHRONISIEREN', duration: 400 },
+    { id: 'ready', label: 'BEREIT', duration: 250 },
 ];
 
 export const SiteLoader = memo(function SiteLoader({ onLoadComplete }: SiteLoaderProps) {
@@ -28,11 +28,9 @@ export const SiteLoader = memo(function SiteLoader({ onLoadComplete }: SiteLoade
             for (const step of LOADING_STEPS) {
                 setCurrentStep(stepIndex);
 
-                // Animate progress during this step
                 const progressPerStep = 100 / LOADING_STEPS.length;
                 const targetProgress = progressValue + progressPerStep;
 
-                // Smooth progress animation
                 const startProgress = progressValue;
                 const steps = 10;
                 for (let i = 0; i <= steps; i++) {
@@ -44,12 +42,10 @@ export const SiteLoader = memo(function SiteLoader({ onLoadComplete }: SiteLoade
                 stepIndex++;
             }
 
-            // Final delay before exit animation
-            await new Promise(r => setTimeout(r, 200));
+            await new Promise(r => setTimeout(r, 150));
             setIsExiting(true);
 
-            // Wait for exit animation
-            await new Promise(r => setTimeout(r, 600));
+            await new Promise(r => setTimeout(r, 400));
             onLoadComplete();
         };
 
@@ -60,84 +56,83 @@ export const SiteLoader = memo(function SiteLoader({ onLoadComplete }: SiteLoade
         <AnimatePresence>
             {!isExiting ? (
                 <motion.div
-                    className="fixed inset-0 z-[100] bg-slate-950 flex items-center justify-center"
+                    className="fixed inset-0 z-[100] bg-[#0a0a0c] flex items-center justify-center"
                     initial={{ opacity: 1 }}
                     exit={{
                         opacity: 0,
-                        transition: { duration: 0.5, ease: 'easeOut' }
+                        transition: { duration: 0.4, ease: 'easeOut' }
                     }}
                 >
-                    {/* Background grid */}
+                    {/* Subtle grid */}
                     <div
-                        className="absolute inset-0 opacity-20"
+                        className="absolute inset-0 opacity-[0.02]"
                         style={{
                             backgroundImage: `
-                linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px)
-              `,
-                            backgroundSize: '40px 40px',
+                                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
+                            `,
+                            backgroundSize: '50px 50px',
                         }}
                     />
 
-                    {/* Central loader */}
-                    <div className="relative z-10 w-full max-w-lg px-8">
-                        {/* Logo - Using actual Falke logo */}
+                    {/* Loader content */}
+                    <div className="relative z-10 w-full max-w-md px-8">
+                        {/* Logo */}
                         <motion.div
-                            className="text-center mb-12"
-                            initial={{ opacity: 0, y: 20 }}
+                            className="text-center mb-10"
+                            initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
+                            transition={{ delay: 0.15 }}
                         >
-                            <div className="inline-flex flex-col items-center gap-4 mb-4">
+                            <div className="inline-flex flex-col items-center gap-3">
                                 <img
                                     src="/Falke_Blau-frei.png"
                                     alt="Falke FM"
-                                    className="h-16 w-auto brightness-0 invert"
+                                    className="h-14 w-auto brightness-0 invert opacity-90"
                                 />
-                                <p className="text-xs text-cyan-400 font-mono tracking-wider">INFRASTRUCTURE INTELLIGENCE</p>
+                                <p className="text-[10px] text-gray-500 font-mono tracking-[0.3em]">INFRASTRUCTURE INTELLIGENCE</p>
                             </div>
                         </motion.div>
 
-                        {/* Terminal-style loading box */}
+                        {/* Terminal box */}
                         <motion.div
-                            className="bg-slate-900/80 border border-cyan-500/30 rounded-xl overflow-hidden backdrop-blur-sm"
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.3 }}
+                            className="bg-[#0f0f12] border border-white/5"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.25 }}
                         >
-                            {/* Terminal header */}
-                            <div className="flex items-center gap-2 px-4 py-3 border-b border-slate-700/50 bg-slate-800/50">
+                            {/* Header */}
+                            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/5 bg-white/[0.02]">
                                 <div className="flex gap-1.5">
-                                    <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                                    <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                                    <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                                    <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                                    <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                                    <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
                                 </div>
-                                <span className="text-xs font-mono text-gray-500 ml-2">falke-fm-platform</span>
+                                <span className="text-[10px] font-mono text-gray-600 ml-2">falke-fm-platform</span>
                             </div>
 
-                            {/* Loading steps */}
-                            <div className="p-4 font-mono text-sm space-y-2">
+                            {/* Steps */}
+                            <div className="p-4 font-mono text-[11px] space-y-1.5">
                                 {LOADING_STEPS.map((step, index) => (
                                     <motion.div
                                         key={step.id}
-                                        className={`flex items-center gap-3 ${index < currentStep
-                                            ? 'text-gray-500'
-                                            : index === currentStep
-                                                ? 'text-cyan-400'
-                                                : 'text-gray-700'
+                                        className={`flex items-center gap-2.5 ${index < currentStep
+                                                ? 'text-gray-600'
+                                                : index === currentStep
+                                                    ? 'text-gray-300'
+                                                    : 'text-gray-700'
                                             }`}
-                                        initial={{ opacity: 0, x: -10 }}
+                                        initial={{ opacity: 0 }}
                                         animate={{
                                             opacity: index <= currentStep ? 1 : 0.3,
-                                            x: 0
                                         }}
-                                        transition={{ delay: 0.1 * index }}
+                                        transition={{ delay: 0.05 * index }}
                                     >
-                                        <span className="w-5 text-center">
+                                        <span className="w-4">
                                             {index < currentStep ? (
-                                                <span className="text-emerald-400">✓</span>
+                                                <span className="text-gray-500">✓</span>
                                             ) : index === currentStep ? (
-                                                <span className="animate-pulse">●</span>
+                                                <span className="animate-pulse">▸</span>
                                             ) : (
                                                 <span className="text-gray-700">○</span>
                                             )}
@@ -147,41 +142,32 @@ export const SiteLoader = memo(function SiteLoader({ onLoadComplete }: SiteLoade
                                 ))}
                             </div>
 
-                            {/* Progress bar */}
+                            {/* Progress */}
                             <div className="px-4 pb-4">
-                                <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div className="h-px bg-white/5 overflow-hidden">
                                     <motion.div
-                                        className="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-400"
+                                        className="h-full bg-white/20"
                                         style={{ width: `${progress}%` }}
                                         transition={{ duration: 0.1 }}
                                     />
                                 </div>
-                                <div className="flex justify-between mt-2 text-xs font-mono">
-                                    <span className="text-gray-500">Fortschritt</span>
-                                    <span className="text-cyan-400">{Math.round(progress)}%</span>
+                                <div className="flex justify-between mt-2 text-[10px] font-mono">
+                                    <span className="text-gray-600">PROGRESS</span>
+                                    <span className="text-gray-500">{Math.round(progress)}%</span>
                                 </div>
                             </div>
                         </motion.div>
 
-                        {/* Bottom text */}
+                        {/* Footer */}
                         <motion.p
-                            className="text-center text-gray-600 text-xs mt-6"
+                            className="text-center text-gray-700 text-[10px] mt-5 font-mono"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 0.5 }}
+                            transition={{ delay: 0.4 }}
                         >
-                            Infrastrukturelles Facility Management der nächsten Generation
+                            Infrastrukturelles Facility Management
                         </motion.p>
                     </div>
-
-                    {/* Corner decorations */}
-                    <div className="absolute top-4 left-4 w-20 h-20 border-l-2 border-t-2 border-cyan-500/30 rounded-tl-lg" />
-                    <div className="absolute top-4 right-4 w-20 h-20 border-r-2 border-t-2 border-cyan-500/30 rounded-tr-lg" />
-                    <div className="absolute bottom-4 left-4 w-20 h-20 border-l-2 border-b-2 border-cyan-500/30 rounded-bl-lg" />
-                    <div className="absolute bottom-4 right-4 w-20 h-20 border-r-2 border-b-2 border-cyan-500/30 rounded-br-lg" />
-
-                    {/* Ambient glow */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none" />
                 </motion.div>
             ) : null}
         </AnimatePresence>

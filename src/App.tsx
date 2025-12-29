@@ -104,41 +104,44 @@ function App() {
         <section id="leistungen" className="relative min-h-screen py-32 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold tracking-wider text-blue-400 uppercase bg-blue-500/10 rounded-full border border-blue-500/20 mb-6">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold tracking-wider text-gray-400 uppercase bg-white/5 rounded border border-white/10 mb-6">
                 Unsere Leistungen
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-                Infrastrukturelles FM auf <span className="text-gradient-blue">höchstem Niveau</span>
+                Infrastrukturelles FM auf <span className="text-gray-400">höchstem Niveau</span>
               </h2>
-              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              <p className="text-gray-500 text-lg max-w-2xl mx-auto">
                 Wir liefern operative Exzellenz durch datengetriebene Prozesse und höchste Qualitätsstandards –
                 für Asset Manager, die Präzision erwarten.
               </p>
             </div>
 
             {/* Service cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {SERVICES.map((service, index) => (
                 <div
                   key={service.title}
-                  className="group glass-panel p-8 hover:bg-white/[0.04] transition-all duration-300 hover:-translate-y-1 hover:shadow-glow-sm"
+                  className="group relative bg-[#0f0f12] border border-white/5 p-8 hover:border-white/10 transition-all duration-300 hover:-translate-y-1"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
+                  {/* Top accent line */}
+                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
                   {/* Icon */}
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/10 border border-blue-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <service.icon className="w-7 h-7 text-blue-400" />
+                  <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-white/10 transition-colors">
+                    <service.icon className="w-6 h-6 text-white" />
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-semibold text-white mb-3">{service.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-6">{service.description}</p>
+                  <h3 className="text-lg font-semibold text-white mb-3">{service.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-6">{service.description}</p>
 
                   {/* Features */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     {service.features.map((feature) => (
                       <span
                         key={feature}
-                        className="px-2.5 py-1 text-xs font-medium text-gray-300 bg-gray-800/50 rounded-md border border-gray-700/50"
+                        className="px-2.5 py-1 text-[10px] font-medium text-gray-400 bg-white/5 rounded border border-white/5"
                       >
                         {feature}
                       </span>
@@ -146,10 +149,10 @@ function App() {
                   </div>
 
                   {/* Metric */}
-                  <div className="pt-4 border-t border-gray-800/50">
+                  <div className="pt-4 border-t border-white/5">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-2xl font-bold text-blue-400">{service.metric.value}</span>
-                      <span className="text-xs text-gray-500 uppercase tracking-wider">{service.metric.label}</span>
+                      <span className="text-2xl font-bold text-white">{service.metric.value}</span>
+                      <span className="text-[10px] text-gray-600 uppercase tracking-wider">{service.metric.label}</span>
                     </div>
                   </div>
                 </div>
@@ -194,11 +197,11 @@ function App() {
               </div>
 
               {/* Trust visualization */}
-              <div className="relative h-[400px] glass-panel rounded-2xl overflow-hidden">
+              <div className="relative h-[400px] bg-[#0f0f12] border border-white/5 rounded-lg overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center p-8">
-                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 flex items-center justify-center">
-                      <svg className="w-12 h-12 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                      <svg className="w-12 h-12 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                         <path d="M9 12l2 2 4-4" />
                       </svg>
@@ -233,13 +236,13 @@ function App() {
         {/* Contact Section */}
         <section id="kontakt" className="relative py-32 px-4 border-t border-gray-800/50">
           <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold tracking-wider text-blue-400 uppercase bg-blue-500/10 rounded-full border border-blue-500/20 mb-6">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold tracking-wider text-gray-400 uppercase bg-white/5 rounded border border-white/10 mb-6">
               Kontakt
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
               Bereit für operative Exzellenz?
             </h2>
-            <p className="text-gray-400 text-lg mb-10">
+            <p className="text-gray-500 text-lg mb-10">
               Lassen Sie uns gemeinsam besprechen, wie wir Ihr Facility Management auf das nächste Level heben können.
             </p>
 
@@ -259,7 +262,7 @@ function App() {
             </a>
 
             <p className="mt-6 text-gray-500 text-sm">
-              Oder rufen Sie uns an: <a href="tel:+4930123456789" className="text-blue-400 hover:text-blue-300 transition-colors">+49 30 123 456 789</a>
+              Oder rufen Sie uns an: <a href="tel:+4930123456789" className="text-gray-300 hover:text-white transition-colors">+49 30 123 456 789</a>
             </p>
           </div>
         </section>

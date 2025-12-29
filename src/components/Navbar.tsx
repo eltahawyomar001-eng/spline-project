@@ -66,7 +66,7 @@ export const Navbar = memo(function Navbar() {
                        hover:shadow-glow-md hover:-translate-y-0.5"
                     >
                         <span className="relative z-10">Angebot anfordern</span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 hover:opacity-100 transition-opacity" />
+                        <div className="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity" />
                     </a>
 
                     {/* Mobile Menu Button - iOS compatible */}

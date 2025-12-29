@@ -1,18 +1,16 @@
 import { memo, lazy, Suspense } from 'react';
-import useIsMobile from '../../hooks/useIsMobile';
 
-// Dynamic import - Spline bundle will NOT be downloaded on mobile
+// Dynamic import for 3D building
 const SplineBuilding = lazy(() => import('./SplineBuilding'));
 
-
-// Trust badges data - German
+// Trust badges data
 const TRUST_BADGES = [
   { icon: 'shield', label: 'ISO-zertifiziert' },
   { icon: 'uptime', label: '24/7 Erreichbarkeit' },
   { icon: 'chart', label: 'Haftungssicherheit' },
 ];
 
-// Icon components
+// Icons
 function ShieldIcon({ className = '' }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -50,15 +48,6 @@ function ArrowRightIcon({ className = '' }: { className?: string }) {
   );
 }
 
-function SparkleIcon({ className = '' }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
-      <circle cx="12" cy="12" r="4" />
-    </svg>
-  );
-}
-
 const BadgeIcon = memo(({ type, className }: { type: string; className: string }) => {
   switch (type) {
     case 'shield':
@@ -73,19 +62,23 @@ const BadgeIcon = memo(({ type, className }: { type: string; className: string }
 });
 
 export const Hero = memo(function Hero() {
-  // Don't render Spline on mobile for performance
-  const isMobile = useIsMobile(640);
+  // 3D loads on ALL devices including mobile
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-dark-950">
-      {/* Background */}
-      <div className="absolute inset-0 bg-hero-gradient" />
-      <div className="grid-background" />
+      {/* Dark luxury background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0c] via-[#0f0f12] to-[#0a0a0c]" />
 
-      {/* Simple glow - no animation */}
-      <div className="absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-blue-500/10 rounded-full blur-[80px] sm:blur-[100px] -translate-y-1/2 translate-x-1/4" />
-
-      {/* Noise Texture */}
-      <div className="noise-overlay" />
+      {/* Subtle grid overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `
+                        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
+                    `,
+          backgroundSize: '60px 60px',
+        }}
+      />
 
       {/* Main Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
@@ -93,32 +86,32 @@ export const Hero = memo(function Hero() {
 
           {/* Left Column - Content */}
           <div className="flex flex-col justify-center lg:pr-8 text-center lg:text-left">
-            {/* Eyebrow */}
+            {/* Eyebrow - Bloomberg style muted */}
             <div className="mb-4 sm:mb-6 flex justify-center lg:justify-start">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 text-[10px] sm:text-xs font-semibold tracking-wider text-blue-400 uppercase bg-blue-500/10 rounded-full border border-blue-500/20">
-                <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" />
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 text-[10px] sm:text-xs font-semibold tracking-wider text-gray-400 uppercase bg-white/5 rounded border border-white/10">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full" />
                 Professionelles Facility Management
               </span>
             </div>
 
-            {/* Headline */}
+            {/* Headline - clean white */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-tight">
               <span className="block">Operative Exzellenz</span>
-              <span className="block text-gradient-blue mt-1 sm:mt-2">für Ihre Immobilien.</span>
+              <span className="block text-gray-400 mt-1 sm:mt-2">für Ihre Immobilien.</span>
             </h1>
 
             {/* Subtext */}
-            <p className="mt-4 sm:mt-6 max-w-xl mx-auto lg:mx-0 text-base sm:text-lg lg:text-xl text-gray-400 leading-relaxed">
+            <p className="mt-4 sm:mt-6 max-w-xl mx-auto lg:mx-0 text-base sm:text-lg lg:text-xl text-gray-500 leading-relaxed">
               Datengetriebenes Infrastrukturelles Facility Management für höchste Ansprüche.
               Wir liefern Präzision, Zuverlässigkeit und Transparenz.
             </p>
 
-            {/* CTAs - Clear visual hierarchy */}
+            {/* CTAs - Dark luxury style */}
             <div className="mt-8 sm:mt-10 flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center lg:justify-start">
-              {/* Primary CTA - Larger and more prominent */}
+              {/* Primary CTA */}
               <a
                 href="#kontakt"
-                className="btn-primary px-8 py-4 text-base sm:text-lg font-semibold w-full sm:w-auto"
+                className="inline-flex items-center justify-center px-8 py-4 text-base sm:text-lg font-semibold text-white bg-white/10 rounded-lg border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all w-full sm:w-auto"
               >
                 <span className="flex items-center justify-center gap-2">
                   Angebot anfordern
@@ -126,24 +119,21 @@ export const Hero = memo(function Hero() {
                 </span>
               </a>
 
-              {/* Secondary CTA - Subtle */}
+              {/* Secondary CTA */}
               <a
                 href="#leistungen"
-                className="btn-secondary px-6 py-3.5 text-sm sm:text-base w-full sm:w-auto opacity-80 hover:opacity-100"
+                className="inline-flex items-center justify-center px-6 py-3.5 text-sm sm:text-base font-medium text-gray-400 hover:text-white transition-colors w-full sm:w-auto"
               >
-                <span className="flex items-center justify-center gap-2">
-                  <SparkleIcon className="w-4 h-4" />
-                  Leistungen entdecken
-                </span>
+                Leistungen entdecken
               </a>
             </div>
 
-            {/* Trust Badges */}
-            <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-800/50">
+            {/* Trust Badges - muted */}
+            <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/5">
               <div className="flex flex-wrap gap-2 sm:gap-3 justify-center lg:justify-start">
                 {TRUST_BADGES.map((badge) => (
-                  <span key={badge.label} className="trust-badge text-xs sm:text-sm">
-                    <BadgeIcon type={badge.icon} className="trust-badge-icon w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span key={badge.label} className="inline-flex items-center gap-2 px-3 py-1.5 text-xs sm:text-sm text-gray-500 bg-white/3 rounded border border-white/5">
+                    <BadgeIcon type={badge.icon} className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-600" />
                     {badge.label}
                   </span>
                 ))}
@@ -151,47 +141,29 @@ export const Hero = memo(function Hero() {
             </div>
           </div>
 
-          {/* Right Column - 3D Building (desktop) / Static Image (mobile) */}
+          {/* Right Column - 3D Building */}
           <div className="relative h-[350px] sm:h-[400px] lg:h-[600px]">
-            {/* Mobile: Static image for performance */}
-            {isMobile && (
-              <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden">
-                <img
-                  src="/building-mobile.png"
-                  alt="3D Building Visualization"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
+            <Suspense fallback={
+              <div className="absolute inset-0 rounded-xl overflow-hidden flex items-center justify-center bg-[#0f0f12] border border-white/5">
+                <div className="text-gray-600 text-sm font-mono">INITIALISIERE...</div>
               </div>
-            )}
-
-            {/* Desktop/Tablet: Full 3D Spline - NOT loaded on mobile at all */}
-            {!isMobile && (
-              <Suspense fallback={
-                <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden flex items-center justify-center bg-dark-950">
-                  <div className="text-gray-500 text-sm">Loading 3D...</div>
-                </div>
-              }>
-                <div className="absolute inset-0 glass-panel rounded-2xl overflow-hidden">
-                  <SplineBuilding />
-                </div>
-              </Suspense>
-            )}
-
-            {/* Decorative */}
-            <div className="absolute -inset-px rounded-2xl border border-white/5 pointer-events-none" />
+            }>
+              <div className="absolute inset-0 rounded-xl overflow-hidden border border-white/5">
+                <SplineBuilding />
+              </div>
+            </Suspense>
           </div>
         </div>
       </div>
 
       {/* Bottom gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-t from-dark-950 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-t from-[#0a0a0c] to-transparent pointer-events-none" />
 
-      {/* Scroll indicator - visible on all devices */}
+      {/* Scroll indicator */}
       <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2">
-        <div className="flex flex-col items-center gap-2 text-gray-500">
-          <span className="text-[10px] uppercase tracking-widest hidden sm:block">Scroll</span>
-          <div className="w-5 sm:w-6 h-8 sm:h-10 rounded-full border-2 border-gray-700/50 flex justify-center pt-2">
+        <div className="flex flex-col items-center gap-2 text-gray-600">
+          <span className="text-[10px] uppercase tracking-widest hidden sm:block font-mono">Scroll</span>
+          <div className="w-5 sm:w-6 h-8 sm:h-10 rounded-full border border-white/10 flex justify-center pt-2">
             <div className="w-1 h-2 bg-gray-600 rounded-full animate-bounce" />
           </div>
         </div>
@@ -201,4 +173,3 @@ export const Hero = memo(function Hero() {
 });
 
 export default Hero;
-

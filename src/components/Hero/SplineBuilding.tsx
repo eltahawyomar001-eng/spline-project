@@ -1,98 +1,93 @@
 import { useState, useCallback, lazy, Suspense } from 'react';
 import DataCard, { DataCardData } from './DataCard';
 
-// Lazy load Building3D to code-split the entire Three.js library (~1MB)
+// Lazy load Building3D
 const Building3D = lazy(() => import('./Building3D'));
 
-// Data card content for each hotspot
+// Data card content - Bloomberg terminal style
 const HOTSPOT_DATA: Record<string, DataCardData> = {
   roof: {
     id: 'roof',
-    title: 'Technische Gebäudeverwaltung',
-    status: 'OPERATIONAL',
+    title: 'DACHSYSTEME & TECHNIK',
+    status: 'BETRIEBSBEREIT',
     statusType: 'success',
     metrics: [
-      { label: 'System Status', value: 'OK', status: 'positive' },
-      { label: 'Wartungsindex', value: '98%', status: 'positive' },
-      { label: 'Nächste Prüfung', value: 'Morgen 09:00', status: 'neutral' },
-      { label: 'Reaktionszeit', value: '<2h', status: 'positive' },
+      { label: 'Systemstatus', value: 'OK', status: 'positive' },
+      { label: 'Wartungsindex', value: '98.2%', status: 'positive' },
+      { label: 'Letzte Inspektion', value: '15.12.2025', status: 'neutral' },
+      { label: 'Nächste Wartung', value: '15.01.2026', status: 'neutral' },
     ],
   },
   windows: {
     id: 'windows',
-    title: 'Reinigung & Hygiene',
-    status: 'ALL CLEAR',
+    title: 'FASSADE & REINIGUNG',
+    status: 'ABGESCHLOSSEN',
     statusType: 'success',
     metrics: [
-      { label: 'System Status', value: 'OK', status: 'positive' },
-      { label: 'Qualitätsindex', value: '97%', status: 'positive' },
-      { label: 'Letzte Reinigung', value: 'Heute 06:00', status: 'neutral' },
-      { label: 'Beschwerden', value: '0', status: 'positive' },
+      { label: 'Qualitätsindex', value: '97.4%', status: 'positive' },
+      { label: 'Letzte Reinigung', value: '28.12.2025', status: 'neutral' },
+      { label: 'Reklamationen', value: '0', status: 'positive' },
+      { label: 'Nächster Termin', value: '28.01.2026', status: 'neutral' },
     ],
   },
   parking: {
     id: 'parking',
-    title: 'Arealpflege & Winterdienst',
-    status: 'STANDBY',
+    title: 'PARKFLÄCHENMANAGEMENT',
+    status: 'AKTIV',
+    statusType: 'success',
+    metrics: [
+      { label: 'Kapazität', value: '12 Stellplätze', status: 'neutral' },
+      { label: 'Belegung aktuell', value: '5/12 (42%)', status: 'neutral' },
+      { label: 'Markierungen', value: 'Intakt', status: 'positive' },
+      { label: 'Beleuchtung', value: '100%', status: 'positive' },
+    ],
+  },
+  winterdienst: {
+    id: 'winterdienst',
+    title: 'WINTERDIENST & VERKEHRSSICHERUNG',
+    status: 'EINSATZBEREIT',
     statusType: 'info',
     metrics: [
-      { label: 'System Status', value: 'OK', status: 'positive' },
-      { label: 'Verkehrssicher', value: '100%', status: 'positive' },
-      { label: 'Nächster Einsatz', value: 'Bei Bedarf', status: 'neutral' },
-      { label: 'Grünpflege', value: 'Optimal', status: 'positive' },
+      { label: 'Räumstatus', value: 'Standby', status: 'positive' },
+      { label: 'Streumittelvorrat', value: 'Ausreichend', status: 'positive' },
+      { label: 'Letzte Kontrolle', value: '29.12.2025 06:00', status: 'neutral' },
+      { label: 'Einsatzbereitschaft', value: '24/7', status: 'positive' },
+    ],
+  },
+  areal: {
+    id: 'areal',
+    title: 'AREALPFLEGE & GRÜNANLAGEN',
+    status: 'IN ORDNUNG',
+    statusType: 'success',
+    metrics: [
+      { label: 'Pflegezustand', value: 'Sehr gut', status: 'positive' },
+      { label: 'Letzte Pflege', value: '20.12.2025', status: 'neutral' },
+      { label: 'Baumkontrolle', value: 'Aktuell', status: 'positive' },
+      { label: 'Nächster Schnitt', value: 'März 2026', status: 'neutral' },
     ],
   },
 };
 
-// Card position based on active view
 const CARD_POSITIONS: Record<string, { x: number; y: number }> = {
-  roof: { x: 30, y: 80 },
-  windows: { x: 30, y: 150 },
-  parking: { x: 30, y: 220 },
+  roof: { x: 24, y: 60 },
+  windows: { x: 24, y: 60 },
+  parking: { x: 24, y: 60 },
+  winterdienst: { x: 24, y: 60 },
+  areal: { x: 24, y: 60 },
 };
 
-// Scan-line effect overlay
-function ScanLines() {
-  return (
-    <div
-      className="absolute inset-0 pointer-events-none z-25 opacity-[0.015]"
-      style={{
-        background: `repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(255,255,255,0.1) 2px,
-          rgba(255,255,255,0.1) 4px
-        )`,
-      }}
-    />
-  );
-}
-
-// Loading component
-function LoadingOverlay({ isVisible }: { isVisible: boolean }) {
+// Loading state - Bloomberg terminal style
+function LoadingState({ isVisible }: { isVisible: boolean }) {
   if (!isVisible) return null;
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-slate-950 z-40 transition-opacity duration-500">
-      <div className="text-center max-w-md">
-        <div className="mb-8 font-mono text-left bg-slate-900/80 border border-cyan-500/30 rounded-lg p-4 backdrop-blur-sm">
-          <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-700">
-            <div className="w-3 h-3 rounded-full bg-red-500/80" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-            <div className="w-3 h-3 rounded-full bg-green-500/80" />
-            <span className="text-gray-500 text-xs ml-2">falke-fm-system</span>
-          </div>
-          <div className="space-y-1 text-xs">
-            <div className="flex items-center gap-2 text-cyan-400">
-              <span className="animate-pulse">●</span> 3D Gebäude wird geladen...
-            </div>
-          </div>
+    <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a0c] z-40">
+      <div className="text-center">
+        <div className="font-mono text-gray-500 text-xs tracking-wider mb-3">
+          INITIALISIEREN...
         </div>
-        <div className="w-64 mx-auto">
-          <div className="h-1 bg-slate-800 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 animate-pulse" style={{ width: '60%' }} />
-          </div>
+        <div className="w-40 h-px bg-white/10 overflow-hidden">
+          <div className="h-full w-1/2 bg-white/30 animate-pulse" />
         </div>
       </div>
     </div>
@@ -121,9 +116,9 @@ export function SplineBuilding() {
   const isHotspotActive = activeView !== 'default';
 
   return (
-    <div className="spline-container relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+    <div className="spline-container relative bg-[#0a0a0c] overflow-hidden">
 
-      {/* 3D Building Scene - Lazy loaded with Three.js */}
+      {/* 3D Scene */}
       <div className={`absolute inset-0 z-10 transition-opacity duration-500 ${isModelLoaded ? 'opacity-100' : 'opacity-0'}`}>
         <Suspense fallback={null}>
           <Building3D
@@ -134,21 +129,8 @@ export function SplineBuilding() {
         </Suspense>
       </div>
 
-      {/* Loading overlay */}
-      <LoadingOverlay isVisible={!isModelLoaded} />
-
-      {/* Scan-line effect */}
-      <ScanLines />
-
-      {/* Vignette overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none z-15"
-        style={{
-          background: `
-            radial-gradient(ellipse at center, transparent 0%, rgba(5,5,16,0.3) 70%, rgba(5,5,16,0.8) 100%)
-          `
-        }}
-      />
+      {/* Loading */}
+      <LoadingState isVisible={!isModelLoaded} />
 
       {/* Data Card */}
       <DataCard
@@ -157,59 +139,47 @@ export function SplineBuilding() {
         isVisible={isHotspotActive && !!HOTSPOT_DATA[activeView]}
       />
 
-      {/* HUD Overlay - Top Left */}
+      {/* Top left HUD - Bloomberg style */}
       {isModelLoaded && (
-        <div className="absolute top-4 left-4 font-mono text-[10px] text-cyan-400/90 space-y-1 pointer-events-none z-20 bg-slate-950/70 backdrop-blur-md px-3 py-2 rounded-lg border border-cyan-500/30">
+        <div className="absolute top-3 left-3 font-mono text-[10px] text-gray-500 z-20 bg-black/60 px-3 py-2 border border-white/5">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="font-semibold tracking-wider">FALKE FM SYSTEM</span>
+            <span className="w-1.5 h-1.5 bg-gray-500 rounded-full" />
+            <span className="tracking-wider">FALKE FM</span>
           </div>
-          <div className="text-gray-400">Modell: PREMIUM OFFICE</div>
-          <div className="text-gray-400">Modus: INTERACTIVE 3D</div>
+          <div className="text-gray-600 mt-0.5">CAMPUS ÜBERSICHT</div>
         </div>
       )}
 
-      {/* HUD Overlay - Top Right */}
+      {/* Top right HUD */}
       {isModelLoaded && (
-        <div className="absolute top-4 right-4 font-mono text-[10px] text-cyan-400/90 text-right space-y-1 pointer-events-none z-20 bg-slate-950/70 backdrop-blur-md px-3 py-2 rounded-lg border border-cyan-500/30">
+        <div className="absolute top-3 right-3 font-mono text-[10px] text-gray-600 text-right z-20 bg-black/60 px-3 py-2 border border-white/5">
           <div>{new Date().toLocaleDateString('de-DE')}</div>
           <div>{new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</div>
-          <div className="flex items-center justify-end gap-2">
-            <span className="text-emerald-400 font-semibold">● LIVE</span>
+          <div className="flex items-center justify-end gap-1 mt-0.5">
+            <span className="w-1 h-1 rounded-full bg-gray-500" />
+            <span className="text-gray-500">LIVE</span>
           </div>
         </div>
       )}
 
-      {/* View indicator */}
+      {/* Active view indicator */}
       {isModelLoaded && isHotspotActive && (
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 font-mono text-xs text-cyan-400 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-full border border-cyan-500/30 z-20">
-          <span className="text-gray-400">ANSICHT:</span> {activeView.toUpperCase()}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 font-mono text-[10px] text-gray-400 bg-black/70 px-4 py-2 border border-white/10 z-20">
+          <span className="text-gray-600">ANSICHT:</span>
+          <span className="ml-2 text-white">{activeView.toUpperCase()}</span>
           <button
             onClick={() => handleViewChange('default')}
-            className="ml-3 text-gray-500 hover:text-white transition-colors"
+            className="ml-4 text-gray-600 hover:text-white transition-colors"
           >
-            ✕ ZURÜCK
+            [ZURÜCK]
           </button>
         </div>
       )}
 
-      {/* Corner brackets */}
-      {isModelLoaded && (
-        <>
-          <div className="absolute top-3 left-3 w-12 h-12 border-l-2 border-t-2 border-cyan-500/50 pointer-events-none z-20 rounded-tl" />
-          <div className="absolute top-3 right-3 w-12 h-12 border-r-2 border-t-2 border-cyan-500/50 pointer-events-none z-20 rounded-tr" />
-          <div className="absolute bottom-3 left-3 w-12 h-12 border-l-2 border-b-2 border-cyan-500/50 pointer-events-none z-20 rounded-bl" />
-          <div className="absolute bottom-3 right-3 w-12 h-12 border-r-2 border-b-2 border-cyan-500/50 pointer-events-none z-20 rounded-br" />
-        </>
-      )}
-
       {/* Instructions */}
       {isModelLoaded && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 text-gray-300 text-xs bg-slate-950/80 backdrop-blur-md px-5 py-2.5 rounded-full border border-cyan-500/30 pointer-events-none z-20 shadow-lg">
-          <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-          </svg>
-          <span>Ziehen zum Drehen • Scrollen zum Zoomen • <span className="text-cyan-400">3D Punkte klicken</span> für Deep Dive</span>
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 font-mono text-[10px] text-gray-600 bg-black/50 px-4 py-2 border border-white/5 z-20">
+          DREHEN: ZIEHEN · ZOOM: SCROLL · AUSWAHL: MARKIERUNG KLICKEN
         </div>
       )}
     </div>

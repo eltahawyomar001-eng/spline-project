@@ -23,9 +23,9 @@ export default {
           950: '#050505',
         },
         accent: {
-          primary: '#3b82f6',
-          secondary: '#22d3ee',
-          glow: '#60a5fa',
+          primary: '#475569',
+          secondary: '#64748b',
+          glow: '#94a3b8',
         },
         glass: {
           white: 'rgba(255, 255, 255, 0.03)',
@@ -60,12 +60,12 @@ export default {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'hero-gradient': 'linear-gradient(135deg, #09090b 0%, #121214 50%, #0f172a 100%)',
+        'hero-gradient': 'linear-gradient(135deg, #0a0a0c 0%, #0f0f12 50%, #0a0a0c 100%)',
       },
       boxShadow: {
-        'glow-sm': '0 0 20px rgba(59, 130, 246, 0.15)',
-        'glow-md': '0 0 40px rgba(59, 130, 246, 0.2)',
-        'glow-lg': '0 0 60px rgba(59, 130, 246, 0.25)',
+        'glow-sm': '0 0 15px rgba(100, 116, 139, 0.1)',
+        'glow-md': '0 0 25px rgba(100, 116, 139, 0.12)',
+        'glow-lg': '0 0 40px rgba(100, 116, 139, 0.15)',
         'card': '0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.5)',
       },
       backdropBlur: {

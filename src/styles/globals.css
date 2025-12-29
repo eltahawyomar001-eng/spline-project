@@ -7,13 +7,14 @@
 
 /* ========================================
    ROOT VARIABLES & BASE STYLES
+   Bloomberg Terminal / Dark Luxury
 ======================================== */
 :root {
-  --color-bg: #050505;
+  --color-bg: #0a0a0c;
   --color-text: #ffffff;
-  --color-accent: #3b82f6;
-  --noise-opacity: 0.03;
-  --grid-color: rgba(255, 255, 255, 0.03);
+  --color-accent: #505055;
+  --noise-opacity: 0.01;
+  --grid-color: rgba(255, 255, 255, 0.015);
 }
 
 * {
@@ -67,7 +68,7 @@ body {
     linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent);
-  opacity: 0.5;
+  opacity: 0.25;
 }
 
 @keyframes gridPulse {
@@ -83,31 +84,18 @@ body {
 }
 
 /* ========================================
-   GRADIENT GLOW EFFECTS
+   GRADIENT GLOW EFFECTS - DISABLED
 ======================================== */
 .glow-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
+  display: none;
 }
 
 .glow-orb-1 {
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
-  top: -200px;
-  right: -100px;
-  animation: float 8s ease-in-out infinite;
+  display: none;
 }
 
 .glow-orb-2 {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.1) 0%, transparent 70%);
-  bottom: -100px;
-  left: 10%;
-  animation: float 10s ease-in-out infinite reverse;
+  display: none;
 }
 
 @keyframes float {
@@ -123,11 +111,11 @@ body {
 }
 
 /* ========================================
-   GLASS MORPHISM UTILITIES
+   GLASS MORPHISM UTILITIES - Light theme
 ======================================== */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
 }
 
@@ -146,7 +134,7 @@ body {
 .glass-panel-hover:hover {
   background: rgba(255, 255, 255, 0.04);
   border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.03);
 }
 
 /* ========================================
@@ -154,16 +142,16 @@ body {
 ======================================== */
 .btn-primary {
   @apply relative inline-flex items-center justify-center px-6 py-3 font-medium text-white bg-accent-primary rounded-lg overflow-hidden transition-all duration-300 ease-out;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
 }
 
 .btn-primary:focus-visible {
-  outline: 2px solid #60a5fa;
+  outline: 2px solid #808080;
   outline-offset: 2px;
 }
 
@@ -191,7 +179,7 @@ body {
 }
 
 .btn-secondary:focus-visible {
-  outline: 2px solid #60a5fa;
+  outline: 2px solid #808080;
   outline-offset: 2px;
 }
 
@@ -214,7 +202,7 @@ body {
 }
 
 .text-gradient-blue {
-  background: linear-gradient(135deg, #60a5fa 0%, #22d3ee 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #808080 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -476,7 +464,7 @@ body {
 ======================================== */
 .btn-primary:active {
   transform: translateY(0) scale(0.98);
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
 }
 
 .btn-secondary:active {
