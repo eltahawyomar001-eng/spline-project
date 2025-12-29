@@ -146,8 +146,8 @@ function TeslaCar({ position, rotation = 0 }: { position: [number, number, numbe
 
     return (
         <group position={position} rotation={[0, rotation, 0]}>
-            {/* Tesla Model 3 - realistic car size */}
-            <primitive object={clonedScene} scale={[4, 4, 4]} />
+            {/* Tesla Model 3 - proper realistic scale */}
+            <primitive object={clonedScene} scale={[1.8, 1.8, 1.8]} />
         </group>
     );
 }
@@ -295,40 +295,6 @@ function ParkingLot({ highlighted }: { highlighted: boolean }) {
             <mesh position={[61, 0.2, 0]} castShadow>
                 <boxGeometry args={[0.6, 0.4, 40]} />
                 <meshStandardMaterial color="#404040" roughness={0.8} />
-            </mesh>
-        </group>
-    );
-}
-
-// ==============================================
-// PATHWAYS (Winterdienst) - Clean sidewalks around building
-// ==============================================
-function Pathways({ highlighted }: { highlighted: boolean }) {
-    return (
-        <group>
-            {/* Front sidewalk - in front of building entrance */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.06, 25]} receiveShadow>
-                <planeGeometry args={[20, 8]} />
-                <meshStandardMaterial
-                    color={highlighted ? '#606060' : '#4a4a4a'}
-                    roughness={0.75}
-                    metalness={0.02}
-                    polygonOffset
-                    polygonOffsetFactor={-2}
-                    polygonOffsetUnits={-2}
-                />
-            </mesh>
-            {/* Connecting path to parking lot */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[25, 0.06, 25]} receiveShadow>
-                <planeGeometry args={[12, 4]} />
-                <meshStandardMaterial
-                    color={highlighted ? '#606060' : '#4a4a4a'}
-                    roughness={0.75}
-                    metalness={0.02}
-                    polygonOffset
-                    polygonOffsetFactor={-2}
-                    polygonOffsetUnits={-2}
-                />
             </mesh>
         </group>
     );
@@ -500,18 +466,17 @@ function Scene({ activeView, onHotspotClick, onReady }: {
 
             {/* Tesla Model 3 cars in parking lot at x=45 */}
             {/* Row 1 - left side of parking (x=37), facing inward */}
-            <TeslaCar position={[37, 1.5, -9]} rotation={Math.PI / 2} />
-            <TeslaCar position={[37, 1.5, -3]} rotation={Math.PI / 2} />
-            <TeslaCar position={[37, 1.5, 3]} rotation={Math.PI / 2} />
-            <TeslaCar position={[37, 1.5, 9]} rotation={Math.PI / 2} />
+            <TeslaCar position={[37, 0, -9]} rotation={Math.PI / 2} />
+            <TeslaCar position={[37, 0, -3]} rotation={Math.PI / 2} />
+            <TeslaCar position={[37, 0, 3]} rotation={Math.PI / 2} />
+            <TeslaCar position={[37, 0, 9]} rotation={Math.PI / 2} />
             {/* Row 2 - right side of parking (x=53), facing inward */}
-            <TeslaCar position={[53, 1.5, -9]} rotation={-Math.PI / 2} />
-            <TeslaCar position={[53, 1.5, -3]} rotation={-Math.PI / 2} />
-            <TeslaCar position={[53, 1.5, 3]} rotation={-Math.PI / 2} />
+            <TeslaCar position={[53, 0, -9]} rotation={-Math.PI / 2} />
+            <TeslaCar position={[53, 0, -3]} rotation={-Math.PI / 2} />
+            <TeslaCar position={[53, 0, 3]} rotation={-Math.PI / 2} />
 
             {/* Campus elements */}
             <ParkingLot highlighted={activeView === 'parking'} />
-            <Pathways highlighted={activeView === 'winterdienst'} />
             <GreenAreas highlighted={activeView === 'areal'} />
 
             {/* Hotspots */}
