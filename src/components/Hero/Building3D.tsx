@@ -16,7 +16,7 @@ import * as THREE from 'three';
 // PRELOAD ALL GLB MODELS
 // ==============================================
 useGLTF.preload('/models/office.glb');
-useGLTF.preload('/models/car.glb');
+useGLTF.preload('/models/porsche.glb');
 useGLTF.preload('/models/grass-converted.glb');
 useGLTF.preload('/models/oak_trees.glb');
 
@@ -123,10 +123,10 @@ function OfficeBuilding({ highlighted: _highlighted }: { highlighted: string | n
 }
 
 // ==============================================
-// CONCEPT CAR (Sketchfab model - multiple instances)
+// PORSCHE 911 (Sketchfab model - multiple instances)
 // ==============================================
-function ConceptCar({ position, rotation = 0 }: { position: [number, number, number]; rotation?: number }) {
-    const { scene } = useGLTF('/models/car.glb');
+function PorscheCar({ position, rotation = 0 }: { position: [number, number, number]; rotation?: number }) {
+    const { scene } = useGLTF('/models/porsche.glb');
 
     const clonedScene = useMemo(() => {
         const cloned = scene.clone();
@@ -136,7 +136,7 @@ function ConceptCar({ position, rotation = 0 }: { position: [number, number, num
                 child.receiveShadow = true;
                 if (child.material) {
                     const mat = child.material as THREE.MeshStandardMaterial;
-                    mat.envMapIntensity = 2;
+                    mat.envMapIntensity = 2.5;
                     mat.needsUpdate = true;
                 }
             }
@@ -146,8 +146,8 @@ function ConceptCar({ position, rotation = 0 }: { position: [number, number, num
 
     return (
         <group position={position} rotation={[0, rotation, 0]}>
-            {/* Car model bbox is ~400 units, need 0.025x scale for realistic car size */}
-            <primitive object={clonedScene} scale={[0.025, 0.025, 0.025]} />
+            {/* Porsche 911 - adjust scale as needed */}
+            <primitive object={clonedScene} scale={[2.5, 2.5, 2.5]} />
         </group>
     );
 }
@@ -538,15 +538,15 @@ function Scene({ activeView, onHotspotClick, onReady }: {
             {/* REAL GLB MODELS */}
             <OfficeBuilding highlighted={activeView} />
 
-            {/* Cars in parking lot - positioned on the parking surface at x=50 */}
+            {/* Porsche 911 cars in parking lot - positioned on the parking surface at x=50 */}
             {/* Row 1 - facing south */}
-            <ConceptCar position={[38, 0, -8]} rotation={Math.PI} />
-            <ConceptCar position={[46, 0, -8]} rotation={Math.PI} />
-            <ConceptCar position={[54, 0, -8]} rotation={Math.PI} />
-            <ConceptCar position={[62, 0, -8]} rotation={Math.PI} />
+            <PorscheCar position={[38, 0, -8]} rotation={Math.PI} />
+            <PorscheCar position={[46, 0, -8]} rotation={Math.PI} />
+            <PorscheCar position={[54, 0, -8]} rotation={Math.PI} />
+            <PorscheCar position={[62, 0, -8]} rotation={Math.PI} />
             {/* Row 2 - facing north */}
-            <ConceptCar position={[38, 0, 8]} rotation={0} />
-            <ConceptCar position={[54, 0, 8]} rotation={0} />
+            <PorscheCar position={[38, 0, 8]} rotation={0} />
+            <PorscheCar position={[54, 0, 8]} rotation={0} />
 
             {/* Campus elements */}
             <ParkingLot highlighted={activeView === 'parking'} />
