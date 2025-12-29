@@ -50,12 +50,12 @@ const TEXTURES = {
 // CAMERA VIEWS
 // ==============================================
 const CAMERA_VIEWS = {
-    default: { position: new THREE.Vector3(45, 28, 45), target: new THREE.Vector3(0, 8, 0) },
+    default: { position: new THREE.Vector3(55, 35, 55), target: new THREE.Vector3(15, 5, 0) },
     roof: { position: new THREE.Vector3(18, 38, 22), target: new THREE.Vector3(0, 20, 0) },
     windows: { position: new THREE.Vector3(28, 16, 18), target: new THREE.Vector3(0, 12, 0) },
-    parking: { position: new THREE.Vector3(35, 16, 30), target: new THREE.Vector3(20, 0, 18) },
-    winterdienst: { position: new THREE.Vector3(28, 18, 35), target: new THREE.Vector3(12, 0, 22) },
-    areal: { position: new THREE.Vector3(-28, 20, 28), target: new THREE.Vector3(-16, 0, 12) },
+    parking: { position: new THREE.Vector3(70, 20, 30), target: new THREE.Vector3(50, 0, 0) },
+    winterdienst: { position: new THREE.Vector3(20, 18, 40), target: new THREE.Vector3(0, 0, 20) },
+    areal: { position: new THREE.Vector3(-35, 22, 30), target: new THREE.Vector3(-20, 0, 8) },
 };
 
 // ==============================================
@@ -538,13 +538,15 @@ function Scene({ activeView, onHotspotClick, onReady }: {
             {/* REAL GLB MODELS */}
             <OfficeBuilding highlighted={activeView} />
 
-            {/* Multiple concept cars in parking - properly spaced in parking spots */}
-            <ConceptCar position={[12, 0, 10]} rotation={Math.PI} />
-            <ConceptCar position={[18, 0, 10]} rotation={Math.PI} />
-            <ConceptCar position={[24, 0, 10]} rotation={Math.PI} />
-            <ConceptCar position={[30, 0, 10]} rotation={Math.PI} />
-            <ConceptCar position={[12, 0, 22]} rotation={0} />
-            <ConceptCar position={[24, 0, 22]} rotation={0} />
+            {/* Cars in parking lot - positioned on the parking surface at x=50 */}
+            {/* Row 1 - facing south */}
+            <ConceptCar position={[38, 0, -8]} rotation={Math.PI} />
+            <ConceptCar position={[46, 0, -8]} rotation={Math.PI} />
+            <ConceptCar position={[54, 0, -8]} rotation={Math.PI} />
+            <ConceptCar position={[62, 0, -8]} rotation={Math.PI} />
+            {/* Row 2 - facing north */}
+            <ConceptCar position={[38, 0, 8]} rotation={0} />
+            <ConceptCar position={[54, 0, 8]} rotation={0} />
 
             {/* Campus elements */}
             <ParkingLot highlighted={activeView === 'parking'} />
@@ -554,8 +556,8 @@ function Scene({ activeView, onHotspotClick, onReady }: {
             {/* Hotspots */}
             <Marker position={[0, 26, 0]} label="ROOF" active={activeView === 'roof'} onClick={() => onHotspotClick('roof')} />
             <Marker position={[10, 14, 8]} label="FACADE" active={activeView === 'windows'} onClick={() => onHotspotClick('windows')} />
-            <Marker position={[22, 4, 16]} label="PARKING" active={activeView === 'parking'} onClick={() => onHotspotClick('parking')} />
-            <Marker position={[8, 3, 20]} label="WINTERDIENST" active={activeView === 'winterdienst'} onClick={() => onHotspotClick('winterdienst')} />
+            <Marker position={[50, 4, 0]} label="PARKING" active={activeView === 'parking'} onClick={() => onHotspotClick('parking')} />
+            <Marker position={[0, 3, 20]} label="WINTERDIENST" active={activeView === 'winterdienst'} onClick={() => onHotspotClick('winterdienst')} />
             <Marker position={[-18, 6, 10]} label="AREALPFLEGE" active={activeView === 'areal'} onClick={() => onHotspotClick('areal')} />
 
             <OrbitControls enablePan={false} minDistance={25} maxDistance={80} minPolarAngle={0.2} maxPolarAngle={Math.PI / 2 - 0.08} enableDamping dampingFactor={0.05} />
