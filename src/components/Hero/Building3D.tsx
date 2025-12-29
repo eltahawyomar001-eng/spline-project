@@ -16,7 +16,7 @@ import * as THREE from 'three';
 // PRELOAD ALL GLB MODELS
 // ==============================================
 useGLTF.preload('/models/office.glb');
-useGLTF.preload('/models/porsche.glb');
+useGLTF.preload('/models/tesla.glb');
 useGLTF.preload('/models/grass-converted.glb');
 useGLTF.preload('/models/oak_trees.glb');
 
@@ -123,10 +123,10 @@ function OfficeBuilding({ highlighted: _highlighted }: { highlighted: string | n
 }
 
 // ==============================================
-// PORSCHE 911 (Sketchfab model - multiple instances)
+// TESLA MODEL 3 (Sketchfab model - multiple instances)
 // ==============================================
-function PorscheCar({ position, rotation = 0 }: { position: [number, number, number]; rotation?: number }) {
-    const { scene } = useGLTF('/models/porsche.glb');
+function TeslaCar({ position, rotation = 0 }: { position: [number, number, number]; rotation?: number }) {
+    const { scene } = useGLTF('/models/tesla.glb');
 
     const clonedScene = useMemo(() => {
         const cloned = scene.clone();
@@ -146,7 +146,7 @@ function PorscheCar({ position, rotation = 0 }: { position: [number, number, num
 
     return (
         <group position={position} rotation={[0, rotation, 0]}>
-            {/* Porsche 911 - adjust scale as needed */}
+            {/* Tesla Model 3 - adjust scale as needed */}
             <primitive object={clonedScene} scale={[2.5, 2.5, 2.5]} />
         </group>
     );
@@ -538,14 +538,14 @@ function Scene({ activeView, onHotspotClick, onReady }: {
             {/* REAL GLB MODELS */}
             <OfficeBuilding highlighted={activeView} />
 
-            {/* Porsche 911 cars in parking lot - beside the building at x=22 */}
+            {/* Tesla Model 3 cars in parking lot - beside the building at x=22 */}
             {/* Row 1 - facing building */}
-            <PorscheCar position={[14, 0.1, -6]} rotation={Math.PI / 2} />
-            <PorscheCar position={[14, 0.1, 0]} rotation={Math.PI / 2} />
-            <PorscheCar position={[14, 0.1, 6]} rotation={Math.PI / 2} />
+            <TeslaCar position={[14, 0.1, -6]} rotation={Math.PI / 2} />
+            <TeslaCar position={[14, 0.1, 0]} rotation={Math.PI / 2} />
+            <TeslaCar position={[14, 0.1, 6]} rotation={Math.PI / 2} />
             {/* Row 2 - facing away */}
-            <PorscheCar position={[30, 0.1, -6]} rotation={-Math.PI / 2} />
-            <PorscheCar position={[30, 0.1, 6]} rotation={-Math.PI / 2} />
+            <TeslaCar position={[30, 0.1, -6]} rotation={-Math.PI / 2} />
+            <TeslaCar position={[30, 0.1, 6]} rotation={-Math.PI / 2} />
 
             {/* Campus elements */}
             <ParkingLot highlighted={activeView === 'parking'} />
