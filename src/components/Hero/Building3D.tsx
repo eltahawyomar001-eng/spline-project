@@ -50,11 +50,11 @@ const TEXTURES = {
 // CAMERA VIEWS
 // ==============================================
 const CAMERA_VIEWS = {
-    default: { position: new THREE.Vector3(50, 35, 50), target: new THREE.Vector3(10, 5, 0) },
+    default: { position: new THREE.Vector3(45, 30, 50), target: new THREE.Vector3(10, 5, 10) },
     roof: { position: new THREE.Vector3(18, 42, 22), target: new THREE.Vector3(0, 20, 0) },
     windows: { position: new THREE.Vector3(30, 18, 22), target: new THREE.Vector3(0, 12, 0) },
-    parking: { position: new THREE.Vector3(65, 25, 35), target: new THREE.Vector3(45, 0, 0) },
-    winterdienst: { position: new THREE.Vector3(20, 18, 40), target: new THREE.Vector3(0, 0, 20) },
+    parking: { position: new THREE.Vector3(55, 22, 50), target: new THREE.Vector3(30, 0, 28) },
+    winterdienst: { position: new THREE.Vector3(25, 18, 45), target: new THREE.Vector3(0, 0, 22) },
     areal: { position: new THREE.Vector3(-35, 22, 30), target: new THREE.Vector3(-20, 0, 8) },
 };
 
@@ -145,9 +145,9 @@ function TeslaCar({ position, rotation = 0 }: { position: [number, number, numbe
     }, [scene]);
 
     return (
-        <group position={position} rotation={[0, rotation, 0]}>
-            {/* Tesla Model 3 - proper realistic scale */}
-            <primitive object={clonedScene} scale={[1.8, 1.8, 1.8]} />
+        <group position={[position[0], position[1] + 1.2, position[2]]} rotation={[0, rotation, 0]}>
+            {/* Tesla Model 3 - scale and Y offset to sit on ground */}
+            <primitive object={clonedScene} scale={[1.8, 1.8, 1.8]} position={[0, 0, 0]} />
         </group>
     );
 }
@@ -238,63 +238,60 @@ function Ground() {
 }
 
 // ==============================================
-// PARKING LOT - CLEAN PROFESSIONAL LOOK
+// PARKING LOT - SIMPLE RECTANGLE, side-front of building
 // ==============================================
 function ParkingLot({ highlighted }: { highlighted: boolean }) {
+    const asphaltTexture = useTexture('/textures/asphalt_03_diff.jpg');
+    
+    useMemo(() => {
+        asphaltTexture.wrapS = asphaltTexture.wrapT = THREE.RepeatWrapping;
+        asphaltTexture.repeat.set(3, 2);
+    }, [asphaltTexture]);
+    
     return (
-        <group>
-            {/* Parking surface - clean dark asphalt */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[45, 0.08, 0]} receiveShadow>
-                <planeGeometry args={[32, 40]} />
+        <group position={[30, 0, 26]}>
+            {/* Parking surface */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.08, 0]} receiveShadow>
+                <planeGeometry args={[35, 22]} />
                 <meshStandardMaterial
-                    color={highlighted ? '#2a2a2a' : '#1f1f1f'}
-                    roughness={0.85}
-                    metalness={0.05}
+                    map={asphaltTexture}
+                    color={highlighted ? '#3a3a3a' : '#2a2a2a'}
+                    roughness={0.9}
+                    metalness={0.02}
                     polygonOffset
                     polygonOffsetFactor={-1}
                     polygonOffsetUnits={-1}
                 />
             </mesh>
 
-            {/* Parking line markings - white lines */}
-            {/* Horizontal divider line */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[45, 0.09, 0]} receiveShadow>
-                <planeGeometry args={[30, 0.15]} />
-                <meshStandardMaterial color="#ffffff" roughness={0.6} />
+            {/* Parking spot lines - perpendicular to building */}
+            {[-12, -4, 4, 12].map((x, i) => (
+                <mesh key={`line-${i}`} rotation={[-Math.PI / 2, 0, 0]} position={[x, 0.09, -5]} receiveShadow>
+                    <planeGeometry args={[0.15, 5]} />
+                    <meshStandardMaterial color="#ffffff" roughness={0.5} />
+                </mesh>
+            ))}
+            {[-12, -4, 4, 12].map((x, i) => (
+                <mesh key={`line2-${i}`} rotation={[-Math.PI / 2, 0, 0]} position={[x, 0.09, 5]} receiveShadow>
+                    <planeGeometry args={[0.15, 5]} />
+                    <meshStandardMaterial color="#ffffff" roughness={0.5} />
+                </mesh>
+            ))}
+
+            {/* Center driving lane line */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.09, 0]} receiveShadow>
+                <planeGeometry args={[30, 0.1]} />
+                <meshStandardMaterial color="#ffcc00" roughness={0.5} />
             </mesh>
-
-            {/* Vertical parking spot lines - Row 1 */}
-            {[-12, -6, 0, 6, 12].map((z, i) => (
-                <mesh key={`line1-${i}`} rotation={[-Math.PI / 2, 0, 0]} position={[37, 0.09, z]} receiveShadow>
-                    <planeGeometry args={[0.15, 5]} />
-                    <meshStandardMaterial color="#ffffff" roughness={0.6} />
-                </mesh>
-            ))}
-
-            {/* Vertical parking spot lines - Row 2 */}
-            {[-12, -6, 0, 6, 12].map((z, i) => (
-                <mesh key={`line2-${i}`} rotation={[-Math.PI / 2, 0, 0]} position={[53, 0.09, z]} receiveShadow>
-                    <planeGeometry args={[0.15, 5]} />
-                    <meshStandardMaterial color="#ffffff" roughness={0.6} />
-                </mesh>
-            ))}
 
             {/* Curbs */}
-            <mesh position={[45, 0.2, -20]} castShadow>
-                <boxGeometry args={[32, 0.4, 0.6]} />
-                <meshStandardMaterial color="#404040" roughness={0.8} />
+            <mesh position={[-17.5, 0.15, 0]} castShadow>
+                <boxGeometry args={[0.5, 0.3, 22]} />
+                <meshStandardMaterial color="#505050" roughness={0.8} />
             </mesh>
-            <mesh position={[45, 0.2, 20]} castShadow>
-                <boxGeometry args={[32, 0.4, 0.6]} />
-                <meshStandardMaterial color="#404040" roughness={0.8} />
-            </mesh>
-            <mesh position={[29, 0.2, 0]} castShadow>
-                <boxGeometry args={[0.6, 0.4, 40]} />
-                <meshStandardMaterial color="#404040" roughness={0.8} />
-            </mesh>
-            <mesh position={[61, 0.2, 0]} castShadow>
-                <boxGeometry args={[0.6, 0.4, 40]} />
-                <meshStandardMaterial color="#404040" roughness={0.8} />
+            <mesh position={[17.5, 0.15, 0]} castShadow>
+                <boxGeometry args={[0.5, 0.3, 22]} />
+                <meshStandardMaterial color="#505050" roughness={0.8} />
             </mesh>
         </group>
     );
@@ -464,16 +461,15 @@ function Scene({ activeView, onHotspotClick, onReady }: {
             {/* REAL GLB MODELS */}
             <OfficeBuilding highlighted={activeView} />
 
-            {/* Tesla Model 3 cars in parking lot at x=45 */}
-            {/* Row 1 - left side of parking (x=37), facing inward */}
-            <TeslaCar position={[37, 0, -9]} rotation={Math.PI / 2} />
-            <TeslaCar position={[37, 0, -3]} rotation={Math.PI / 2} />
-            <TeslaCar position={[37, 0, 3]} rotation={Math.PI / 2} />
-            <TeslaCar position={[37, 0, 9]} rotation={Math.PI / 2} />
-            {/* Row 2 - right side of parking (x=53), facing inward */}
-            <TeslaCar position={[53, 0, -9]} rotation={-Math.PI / 2} />
-            <TeslaCar position={[53, 0, -3]} rotation={-Math.PI / 2} />
-            <TeslaCar position={[53, 0, 3]} rotation={-Math.PI / 2} />
+            {/* Tesla cars in parking - simple grid layout, NO angle */}
+            {/* Row 1 - back row */}
+            <TeslaCar position={[20, 0, 20]} rotation={0} />
+            <TeslaCar position={[30, 0, 20]} rotation={0} />
+            <TeslaCar position={[40, 0, 20]} rotation={0} />
+            {/* Row 2 - front row, facing opposite */}
+            <TeslaCar position={[20, 0, 33]} rotation={Math.PI} />
+            <TeslaCar position={[30, 0, 33]} rotation={Math.PI} />
+            <TeslaCar position={[40, 0, 33]} rotation={Math.PI} />
 
             {/* Campus elements */}
             <ParkingLot highlighted={activeView === 'parking'} />
@@ -481,9 +477,9 @@ function Scene({ activeView, onHotspotClick, onReady }: {
 
             {/* Hotspots */}
             <Marker position={[0, 26, 0]} label="ROOF" active={activeView === 'roof'} onClick={() => onHotspotClick('roof')} />
-            <Marker position={[10, 14, 8]} label="FACADE" active={activeView === 'windows'} onClick={() => onHotspotClick('windows')} />
-            <Marker position={[45, 4, 0]} label="PARKING" active={activeView === 'parking'} onClick={() => onHotspotClick('parking')} />
-            <Marker position={[0, 3, 20]} label="WINTERDIENST" active={activeView === 'winterdienst'} onClick={() => onHotspotClick('winterdienst')} />
+            <Marker position={[12, 14, 6]} label="FACADE" active={activeView === 'windows'} onClick={() => onHotspotClick('windows')} />
+            <Marker position={[30, 4, 26]} label="PARKING" active={activeView === 'parking'} onClick={() => onHotspotClick('parking')} />
+            <Marker position={[0, 3, 22]} label="WINTERDIENST" active={activeView === 'winterdienst'} onClick={() => onHotspotClick('winterdienst')} />
             <Marker position={[-18, 6, 10]} label="AREALPFLEGE" active={activeView === 'areal'} onClick={() => onHotspotClick('areal')} />
 
             <OrbitControls enablePan={false} minDistance={25} maxDistance={80} minPolarAngle={0.2} maxPolarAngle={Math.PI / 2 - 0.08} enableDamping dampingFactor={0.05} />
@@ -515,7 +511,7 @@ export function Building3D({ activeView, onViewChange, onReady }: Building3DProp
     return (
         <Canvas
             shadows
-            camera={{ position: [45, 28, 45], fov: 40, near: 0.5, far: 700 }}
+            camera={{ position: [50, 32, 50], fov: 42, near: 0.5, far: 700 }}
             gl={{
                 antialias: true,
                 alpha: false,
