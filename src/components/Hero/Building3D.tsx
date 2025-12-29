@@ -50,10 +50,10 @@ const TEXTURES = {
 // CAMERA VIEWS
 // ==============================================
 const CAMERA_VIEWS = {
-    default: { position: new THREE.Vector3(40, 30, 40), target: new THREE.Vector3(5, 5, 0) },
-    roof: { position: new THREE.Vector3(18, 38, 22), target: new THREE.Vector3(0, 20, 0) },
-    windows: { position: new THREE.Vector3(28, 16, 18), target: new THREE.Vector3(0, 12, 0) },
-    parking: { position: new THREE.Vector3(40, 18, 20), target: new THREE.Vector3(22, 0, 0) },
+    default: { position: new THREE.Vector3(50, 35, 50), target: new THREE.Vector3(10, 5, 0) },
+    roof: { position: new THREE.Vector3(18, 42, 22), target: new THREE.Vector3(0, 20, 0) },
+    windows: { position: new THREE.Vector3(30, 18, 22), target: new THREE.Vector3(0, 12, 0) },
+    parking: { position: new THREE.Vector3(65, 25, 35), target: new THREE.Vector3(45, 0, 0) },
     winterdienst: { position: new THREE.Vector3(20, 18, 40), target: new THREE.Vector3(0, 0, 20) },
     areal: { position: new THREE.Vector3(-35, 22, 30), target: new THREE.Vector3(-20, 0, 8) },
 };
@@ -146,8 +146,8 @@ function TeslaCar({ position, rotation = 0 }: { position: [number, number, numbe
 
     return (
         <group position={position} rotation={[0, rotation, 0]}>
-            {/* Tesla Model 3 - adjust scale as needed */}
-            <primitive object={clonedScene} scale={[2.5, 2.5, 2.5]} />
+            {/* Tesla Model 3 - proper car scale */}
+            <primitive object={clonedScene} scale={[0.8, 0.8, 0.8]} />
         </group>
     );
 }
@@ -266,9 +266,9 @@ function ParkingLot({ highlighted }: { highlighted: boolean }) {
 
     return (
         <group>
-            {/* Parking surface - BESIDE the building (not overlapping) */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[22, 0.05, 0]} receiveShadow>
-                <planeGeometry args={[28, 30]} />
+            {/* Parking surface - FAR RIGHT of building with clear gap */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[45, 0.05, 0]} receiveShadow>
+                <planeGeometry args={[30, 35]} />
                 <meshStandardMaterial
                     {...asphaltTextures}
                     color={highlighted ? '#252525' : '#1a1a1a'}
@@ -282,8 +282,8 @@ function ParkingLot({ highlighted }: { highlighted: boolean }) {
             </mesh>
 
             {/* Road lines decal */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[22, 0.06, 0]}>
-                <planeGeometry args={[28, 30]} />
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[45, 0.06, 0]}>
+                <planeGeometry args={[30, 35]} />
                 <meshStandardMaterial
                     {...roadLinesTextures}
                     transparent
@@ -298,12 +298,12 @@ function ParkingLot({ highlighted }: { highlighted: boolean }) {
             </mesh>
 
             {/* Curbs */}
-            <mesh position={[22, 0.18, -15]} castShadow>
-                <boxGeometry args={[28, 0.35, 0.5]} />
+            <mesh position={[45, 0.18, -17]} castShadow>
+                <boxGeometry args={[30, 0.35, 0.5]} />
                 <meshStandardMaterial color="#505050" roughness={0.75} />
             </mesh>
-            <mesh position={[22, 0.18, 15]} castShadow>
-                <boxGeometry args={[28, 0.35, 0.5]} />
+            <mesh position={[45, 0.18, 17]} castShadow>
+                <boxGeometry args={[30, 0.35, 0.5]} />
                 <meshStandardMaterial color="#505050" roughness={0.75} />
             </mesh>
         </group>
@@ -538,14 +538,16 @@ function Scene({ activeView, onHotspotClick, onReady }: {
             {/* REAL GLB MODELS */}
             <OfficeBuilding highlighted={activeView} />
 
-            {/* Tesla Model 3 cars in parking lot - beside the building at x=22 */}
-            {/* Row 1 - facing building */}
-            <TeslaCar position={[14, 0.1, -6]} rotation={Math.PI / 2} />
-            <TeslaCar position={[14, 0.1, 0]} rotation={Math.PI / 2} />
-            <TeslaCar position={[14, 0.1, 6]} rotation={Math.PI / 2} />
-            {/* Row 2 - facing away */}
-            <TeslaCar position={[30, 0.1, -6]} rotation={-Math.PI / 2} />
-            <TeslaCar position={[30, 0.1, 6]} rotation={-Math.PI / 2} />
+            {/* Tesla Model 3 cars in parking lot at x=45 */}
+            {/* Row 1 - left side of parking, facing right */}
+            <TeslaCar position={[35, 0.5, -10]} rotation={Math.PI / 2} />
+            <TeslaCar position={[35, 0.5, -3]} rotation={Math.PI / 2} />
+            <TeslaCar position={[35, 0.5, 4]} rotation={Math.PI / 2} />
+            <TeslaCar position={[35, 0.5, 11]} rotation={Math.PI / 2} />
+            {/* Row 2 - right side of parking, facing left */}
+            <TeslaCar position={[55, 0.5, -10]} rotation={-Math.PI / 2} />
+            <TeslaCar position={[55, 0.5, -3]} rotation={-Math.PI / 2} />
+            <TeslaCar position={[55, 0.5, 4]} rotation={-Math.PI / 2} />
 
             {/* Campus elements */}
             <ParkingLot highlighted={activeView === 'parking'} />
@@ -555,7 +557,7 @@ function Scene({ activeView, onHotspotClick, onReady }: {
             {/* Hotspots */}
             <Marker position={[0, 26, 0]} label="ROOF" active={activeView === 'roof'} onClick={() => onHotspotClick('roof')} />
             <Marker position={[10, 14, 8]} label="FACADE" active={activeView === 'windows'} onClick={() => onHotspotClick('windows')} />
-            <Marker position={[22, 4, 0]} label="PARKING" active={activeView === 'parking'} onClick={() => onHotspotClick('parking')} />
+            <Marker position={[45, 4, 0]} label="PARKING" active={activeView === 'parking'} onClick={() => onHotspotClick('parking')} />
             <Marker position={[0, 3, 20]} label="WINTERDIENST" active={activeView === 'winterdienst'} onClick={() => onHotspotClick('winterdienst')} />
             <Marker position={[-18, 6, 10]} label="AREALPFLEGE" active={activeView === 'areal'} onClick={() => onHotspotClick('areal')} />
 
